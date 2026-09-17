@@ -1,0 +1,721 @@
+<title>Edjie Boy Taruc</title>
+<style>
+  :root{
+    --bg:#F7F8F6;
+    --surface:#FFFFFF;
+    --surface-2:#F0F2EF;
+    --ink:#1A2420;
+    --ink-soft:#5B655F;
+    --ink-faint:#8B948D;
+    --line:#DEE3DD;
+    --accent:#0E6B54;
+    --accent-ink:#0A4E3D;
+    --accent-soft:#E4F1EB;
+    --accent-soft-line:#C7DFD3;
+    --shadow: 0 1px 2px rgba(20,30,25,0.04), 0 8px 24px -12px rgba(20,30,25,0.10);
+    --radius: 14px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#121613;
+      --surface:#181D19;
+      --surface-2:#1F2621;
+      --ink:#EAEDE9;
+      --ink-soft:#A7B0A8;
+      --ink-faint:#77817B;
+      --line:#2B332D;
+      --accent:#49CFA8;
+      --accent-ink:#8FE9CB;
+      --accent-soft:rgba(73,207,168,0.12);
+      --accent-soft-line:rgba(73,207,168,0.28);
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 30px -14px rgba(0,0,0,0.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#121613;
+    --surface:#181D19;
+    --surface-2:#1F2621;
+    --ink:#EAEDE9;
+    --ink-soft:#A7B0A8;
+    --ink-faint:#77817B;
+    --line:#2B332D;
+    --accent:#49CFA8;
+    --accent-ink:#8FE9CB;
+    --accent-soft:rgba(73,207,168,0.12);
+    --accent-soft-line:rgba(73,207,168,0.28);
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 30px -14px rgba(0,0,0,0.6);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    padding-inline:20px;
+    padding-block:0;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Fraunces", Georgia, "Times New Roman", serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    text-wrap:balance;
+    color:var(--ink);
+    margin:0;
+  }
+  .mono{
+    font-family:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  a{color:inherit;}
+  .wrap{max-width:920px;margin-inline:auto;}
+
+  /* ---- Top identity bar ---- */
+  header.hero{
+    position:relative;
+    overflow:hidden;
+    padding-block:56px 40px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    border-bottom:1px solid var(--line);
+  }
+  header.hero::before{
+    content:"";
+    position:absolute;
+    top:-45%;
+    right:-8%;
+    width:560px;
+    height:560px;
+    background:radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  header.hero > *{position:relative; z-index:1;}
+  .identity-row{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+  }
+  .avatar{
+    flex:none;
+    width:76px;
+    height:76px;
+    border-radius:22px;
+    background:linear-gradient(135deg, var(--accent) 0%, var(--accent-ink) 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:"Fraunces", serif;
+    font-weight:600;
+    font-size:26px;
+    color:#F7FBF9;
+    letter-spacing:0.02em;
+    box-shadow:var(--shadow);
+  }
+  .name-block{display:flex; flex-direction:column; gap:6px;}
+  .eyebrow{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12.5px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--accent-ink);
+  }
+  h1.name{
+    font-size:clamp(34px,6vw,52px);
+    line-height:1.05;
+    background:linear-gradient(100deg, var(--ink) 25%, var(--accent-ink) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .role-line{
+    font-size:clamp(15px,2.4vw,18px);
+    color:var(--ink-soft);
+    font-weight:500;
+  }
+  .role-line .sep{color:var(--ink-faint); margin-inline:8px;}
+  .contact-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:6px;
+  }
+  .stats-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .stat-tile{
+    flex:1 1 150px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px 16px;
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .stat-tile:hover{
+    transform:translateY(-2px);
+    box-shadow:var(--shadow);
+    border-color:var(--accent-soft-line);
+  }
+  .stat-num{
+    font-family:"Fraunces", serif;
+    font-weight:600;
+    font-size:23px;
+    color:var(--accent-ink);
+    line-height:1;
+  }
+  .stat-label{
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-top:5px;
+    line-height:1.4;
+  }
+  .contact-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:8px 14px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    background:var(--surface);
+    font-size:13.5px;
+    color:var(--ink-soft);
+    text-decoration:none;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .contact-chip:hover{border-color:var(--accent-soft-line); color:var(--accent-ink);}
+  .contact-chip svg{width:14px;height:14px;flex:none;}
+
+  /* ---- Nav ---- */
+  nav.jump{
+    position:sticky;
+    top:env(safe-area-inset-top,0px);
+    z-index:5;
+    background:var(--bg);
+    border-bottom:1px solid var(--line);
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  nav.jump::-webkit-scrollbar{display:none;}
+  nav.jump .row{
+    max-width:920px;
+    margin-inline:auto;
+    display:flex;
+    gap:2px;
+    padding-block:10px;
+    white-space:nowrap;
+  }
+  nav.jump a{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12px;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    text-decoration:none;
+    color:var(--ink-faint);
+    padding:6px 12px;
+    border-radius:999px;
+  }
+  nav.jump a:hover{color:var(--accent-ink); background:var(--accent-soft);}
+
+  section{padding-block:44px; border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:none;}
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:22px;
+  }
+  .section-head .num{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12px;
+    font-weight:600;
+    color:var(--accent-ink);
+    background:var(--accent-soft);
+    border:1px solid var(--accent-soft-line);
+    border-radius:8px;
+    padding:4px 9px;
+    letter-spacing:0.02em;
+  }
+  h2.section-title{font-size:clamp(21px,3vw,26px);}
+
+  p.lede{
+    font-size:16.5px;
+    line-height:1.7;
+    color:var(--ink-soft);
+    max-width:66ch;
+    padding-left:18px;
+    border-left:3px solid var(--accent-soft-line);
+  }
+
+  /* ---- Competencies ---- */
+  .comp-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(230px,1fr));
+    gap:14px;
+  }
+  .comp-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:18px 18px 16px;
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .comp-card:hover{
+    transform:translateY(-3px);
+    box-shadow:var(--shadow);
+    border-color:var(--accent-soft-line);
+  }
+  .comp-card h3{
+    font-family:"Public Sans", sans-serif;
+    font-weight:700;
+    font-size:14.5px;
+    margin-bottom:8px;
+  }
+  .comp-card p{
+    margin:0;
+    font-size:13.5px;
+    line-height:1.55;
+    color:var(--ink-soft);
+  }
+
+  /* ---- Tools ---- */
+  .tool-group{margin-bottom:18px;}
+  .tool-group:last-child{margin-bottom:0;}
+  .tool-group h3{
+    font-family:"IBM Plex Mono", monospace;
+    font-weight:500;
+    font-size:12px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin-bottom:10px;
+  }
+  .tags{display:flex; flex-wrap:wrap; gap:8px;}
+  .tag{
+    font-size:13.5px;
+    padding:6px 12px;
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:8px;
+    color:var(--ink);
+  }
+  .tag.starred{
+    background:var(--accent-soft);
+    border-color:var(--accent-soft-line);
+    color:var(--accent-ink);
+    font-weight:600;
+  }
+
+  /* ---- Experience timeline ---- */
+  .timeline{position:relative;}
+  .role{
+    position:relative;
+    padding-left:28px;
+    padding-bottom:34px;
+    border-left:1px solid var(--line);
+    margin-left:5px;
+  }
+  .role:last-child{padding-bottom:0;}
+  .role::before{
+    content:"";
+    position:absolute;
+    left:-5px;
+    top:4px;
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 0 3px var(--bg);
+  }
+  .role-top{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:8px 16px;
+    margin-bottom:4px;
+  }
+  .role-title{font-size:17.5px; font-weight:700; font-family:"Public Sans",sans-serif;}
+  .role-dates{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12.5px;
+    color:var(--ink-faint);
+    white-space:nowrap;
+  }
+  .role-org{
+    font-size:14px;
+    color:var(--ink-soft);
+    margin-bottom:12px;
+  }
+  .role-org .badge{
+    display:inline-block;
+    font-family:"IBM Plex Mono", monospace;
+    font-size:10.5px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    padding:2px 8px;
+    border-radius:999px;
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    color:var(--ink-faint);
+    margin-left:8px;
+    vertical-align:1px;
+  }
+  ul.bullets{
+    margin:0 0 12px;
+    padding-left:18px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  ul.bullets li{
+    font-size:14.5px;
+    line-height:1.6;
+    color:var(--ink);
+  }
+  .achievement{
+    background:var(--accent-soft);
+    border:1px solid var(--accent-soft-line);
+    border-radius:10px;
+    padding:12px 14px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .achievement .label{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:10.5px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--accent-ink);
+  }
+  .achievement li{font-size:14px; color:var(--ink);}
+  .achievement ul{margin:0; padding-left:16px; display:flex; flex-direction:column; gap:5px;}
+
+  /* ---- Education ---- */
+  .edu-card{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px 20px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:20px;
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .edu-card:hover{
+    transform:translateY(-3px);
+    box-shadow:var(--shadow);
+    border-color:var(--accent-soft-line);
+  }
+  .edu-card h3{font-family:"Public Sans",sans-serif; font-size:15.5px; font-weight:700; margin-bottom:4px;}
+  .edu-card .school{font-size:14px; color:var(--ink-soft);}
+  .edu-card .when{font-family:"IBM Plex Mono",monospace; font-size:12.5px; color:var(--ink-faint); white-space:nowrap;}
+  .cert-line{
+    margin-top:14px;
+    padding-top:14px;
+    border-top:1px dashed var(--line);
+    font-size:14px;
+    color:var(--ink-soft);
+  }
+  .cert-line strong{color:var(--ink);}
+
+  /* ---- Footer / contact ---- */
+  footer{
+    padding-block:48px 60px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  footer h2{font-size:clamp(24px,4vw,32px); max-width:20ch;}
+  .footer-actions{display:flex; flex-wrap:wrap; gap:12px; margin-top:8px;}
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:12px 20px;
+    border-radius:999px;
+    font-size:14px;
+    font-weight:600;
+    text-decoration:none;
+  }
+  .btn.primary{background:var(--accent); color:#F7FBF9;}
+  .btn.ghost{border:1px solid var(--line); color:var(--ink);}
+  .foot-note{font-size:12.5px; color:var(--ink-faint); margin-top:10px;}
+
+  @media (max-width:560px){
+    .role-top{flex-direction:column; align-items:flex-start;}
+    .edu-card{flex-direction:column;}
+    .identity-row{flex-wrap:wrap;}
+    .avatar{width:60px; height:60px; font-size:20px; border-radius:16px;}
+  }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<nav class="jump" aria-label="Section navigation">
+  <div class="row">
+    <a href="#summary">Summary</a>
+    <a href="#competencies">Competencies</a>
+    <a href="#tools">Tools</a>
+    <a href="#experience">Experience</a>
+    <a href="#education">Education</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="identity-row">
+      <div class="avatar" aria-hidden="true">EBT</div>
+      <div class="name-block">
+        <div class="eyebrow">Career Profile</div>
+        <h1 class="name">Edjie Boy Taruc</h1>
+        <div class="role-line">Senior Bookkeeper<span class="sep">·</span>Management Accounting Professional<span class="sep">·</span>Xero Certified</div>
+      </div>
+    </div>
+    <div class="contact-row">
+      <a class="contact-chip" href="mailto:edjieboytaruc@gmail.com">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg>
+        edjieboytaruc@gmail.com
+      </a>
+      <a class="contact-chip" href="tel:+639155683386">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h4l2 5-2.5 1.5a12 12 0 0 0 6 6L15 14l5 2v4a2 2 0 0 1-2 2C9.3 22 2 14.7 2 6a2 2 0 0 1 2-2z"/></svg>
+        +63 915 568 3386
+      </a>
+      <a class="contact-chip" href="https://linkedin.com/in/edjieboytaruc" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10v7M7 7v.01M11 17v-4.5a2 2 0 0 1 4 0V17M11 10v7M15 10v7"/></svg>
+        linkedin.com/in/edjieboytaruc
+      </a>
+      <span class="contact-chip" style="pointer-events:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        Tarlac, Philippines
+      </span>
+    </div>
+    <div class="stats-row">
+      <div class="stat-tile"><div class="stat-num">8+</div><div class="stat-label">Years international experience</div></div>
+      <div class="stat-tile"><div class="stat-num">5</div><div class="stat-label">Countries served — NZ, AU, US, HK, SG</div></div>
+      <div class="stat-tile"><div class="stat-num">Xero</div><div class="stat-label">Certified Advisor</div></div>
+      <div class="stat-tile"><div class="stat-num">200K+</div><div class="stat-label">Expense lines automated in Excel</div></div>
+    </div>
+  </header>
+
+  <section id="summary">
+    <div class="section-head"><span class="num mono">01</span><h2 class="section-title">Professional Summary</h2></div>
+    <p class="lede">Detail-driven bookkeeping and management accounting professional with 8+ years of international experience supporting businesses across New Zealand, Australia, the United States, Hong Kong, and Singapore. Xero Certified, with a strong track record in end-to-end bookkeeping, month-end close, financial reporting, payroll, and statutory tax compliance (GST/PAYE), plus multi-entity account reconciliations. Recognized for building Excel-based tools that cut manual work, tighten reporting accuracy, and give stakeholders faster, more reliable financial insight for decision-making.</p>
+  </section>
+
+  <section id="competencies">
+    <div class="section-head"><span class="num mono">02</span><h2 class="section-title">Core Competencies</h2></div>
+    <div class="comp-grid">
+      <div class="comp-card"><h3>Management &amp; Financial Reporting</h3><p>Month-end close, journal review, financial statements, management reports</p></div>
+      <div class="comp-card"><h3>Financial Analysis</h3><p>Cash flow monitoring, budget vs. actual review, variance &amp; trend analysis</p></div>
+      <div class="comp-card"><h3>Bookkeeping &amp; General Ledger</h3><p>End-to-end bookkeeping, journal entries, general ledger management</p></div>
+      <div class="comp-card"><h3>Accounts Payable &amp; Receivable</h3><p>Invoice processing, billing, payment management, collections</p></div>
+      <div class="comp-card"><h3>Account Reconciliations</h3><p>Bank, credit card, balance sheet, intercompany &amp; general ledger</p></div>
+      <div class="comp-card"><h3>Payroll &amp; Compliance</h3><p>Payroll processing, GST &amp; PAYE, cost allocation, statutory compliance</p></div>
+      <div class="comp-card"><h3>Fixed Assets</h3><p>Fixed asset management, depreciation &amp; disposals</p></div>
+      <div class="comp-card"><h3>Process Improvement</h3><p>Excel automation, financial workpapers, reporting efficiency</p></div>
+    </div>
+  </section>
+
+  <section id="tools">
+    <div class="section-head"><span class="num mono">03</span><h2 class="section-title">Tools &amp; Software</h2></div>
+    <div class="tool-group">
+      <h3>Accounting &amp; Payroll Systems</h3>
+      <div class="tags">
+        <span class="tag starred">Xero (Certified)</span>
+        <span class="tag">QuickBooks Desktop</span>
+        <span class="tag">Hubdoc</span>
+        <span class="tag">Smartly</span>
+        <span class="tag">ThankYou Payroll</span>
+      </div>
+    </div>
+    <div class="tool-group">
+      <h3>Reporting &amp; Analytics</h3>
+      <div class="tags">
+        <span class="tag">Microsoft Excel (Advanced)</span>
+        <span class="tag">Joinn</span>
+        <span class="tag">Power BI</span>
+      </div>
+    </div>
+    <div class="tool-group">
+      <h3>Banking &amp; Payment Platforms</h3>
+      <div class="tags">
+        <span class="tag">ASB FastNet Business</span>
+        <span class="tag">Commbizz</span>
+        <span class="tag">Airwallex</span>
+        <span class="tag">Stripe</span>
+        <span class="tag">PayPal</span>
+        <span class="tag">Wise</span>
+      </div>
+    </div>
+    <div class="tool-group">
+      <h3>Productivity &amp; Collaboration</h3>
+      <div class="tags">
+        <span class="tag">Microsoft Office</span>
+        <span class="tag">Outlook</span>
+        <span class="tag">Microsoft Teams</span>
+        <span class="tag">Google Workspace</span>
+        <span class="tag">RingCentral</span>
+        <span class="tag">HubSpot</span>
+        <span class="tag">Slack</span>
+        <span class="tag">Loom</span>
+        <span class="tag">Karbon</span>
+      </div>
+    </div>
+    <div class="tool-group">
+      <h3>Document Management</h3>
+      <div class="tags">
+        <span class="tag">Adobe Acrobat</span>
+        <span class="tag">Adobe Sign</span>
+        <span class="tag">DocuSign</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="section-head"><span class="num mono">04</span><h2 class="section-title">Professional Experience</h2></div>
+    <div class="timeline">
+
+      <div class="role">
+        <div class="role-top">
+          <div class="role-title">Management Accountant</div>
+          <div class="role-dates mono">Apr 2024 – Present</div>
+        </div>
+        <div class="role-org">FrankHQ Limited — Accounting &amp; Bookkeeping / Financial Services, New Zealand<span class="badge">Full-Time</span></div>
+        <ul class="bullets">
+          <li>Own month-end close for a portfolio of clients — post and review journals and prepare management reports that are accurate and ready for client delivery.</li>
+          <li>Analyze financial results against budget, investigate variances, and surface month-to-month trends that highlight key performance drivers.</li>
+          <li>Advise clients on bookkeeping best practice, accounting processes, and Xero, strengthening the accuracy of their financial records.</li>
+          <li>Manage GST, PAYE, and other statutory filings, keeping clients compliant with New Zealand regulatory deadlines.</li>
+          <li>Support firm operations end-to-end — client onboarding/offboarding, Adobe Sign workflows, First AML verification, Xero subscriptions, and Karbon workflow management.</li>
+        </ul>
+        <div class="achievement">
+          <span class="label">Key achievement</span>
+          <ul><li>Built advanced Excel workpapers for Stripe reconciliation, invoice payment tracking, and payroll summaries — reducing manual effort and improving reporting efficiency across the team.</li></ul>
+        </div>
+      </div>
+
+      <div class="role">
+        <div class="role-top">
+          <div class="role-title">Bookkeeper</div>
+          <div class="role-dates mono">May 2022 – Apr 2024</div>
+        </div>
+        <div class="role-org">FrankHQ Limited — Accounting &amp; Bookkeeping / Financial Services, New Zealand<span class="badge">Full-Time</span></div>
+        <ul class="bullets">
+          <li>Delivered full-cycle bookkeeping — transaction coding, journal posting, general ledger maintenance, and reconciliations — keeping client records accurate and audit-ready for month-end reporting.</li>
+          <li>Managed accounts payable and receivable end-to-end: supplier bills, customer invoices, payments, and collections follow-up.</li>
+          <li>Reconciled bank, credit card, loan, and other balance sheet accounts to maintain financial accuracy.</li>
+          <li>Prepared monthly financial reports and supporting schedules, providing clean, audit-ready documentation for internal and external audits.</li>
+          <li>Processed end-to-end payroll — employee setup, pay runs, leave, deductions, and final pay — in line with statutory and company requirements.</li>
+        </ul>
+      </div>
+
+      <div class="role">
+        <div class="role-top">
+          <div class="role-title">Finance Assistant</div>
+          <div class="role-dates mono">Nov 2024 – Jul 2026</div>
+        </div>
+        <div class="role-org">Elegance Group Limited — IT Services and IT Consulting, New Zealand · Australia · Singapore<span class="badge">Contract</span></div>
+        <ul class="bullets">
+          <li>Coordinated month-end close and consolidation across three entities, reviewing journals, reconciliations, and consolidated financial reports for accuracy.</li>
+          <li>Reconciled intercompany, sales, and purchase accounts to support accurate profit margin reporting.</li>
+          <li>Managed multi-currency customer invoicing and profit margin reviews to protect pricing accuracy and revenue integrity.</li>
+          <li>Processed supplier and contractor payments while monitoring bank balances to maintain healthy cash flow.</li>
+          <li>Ran end-to-end payroll — employee setup, pay runs, leave, deductions, and final pay — in compliance with statutory requirements.</li>
+        </ul>
+        <div class="achievement">
+          <span class="label">Key achievements</span>
+          <ul>
+            <li>Built a Bank Balance Monitoring file that enabled proactive review of upcoming payables and faster transfer decisions.</li>
+            <li>Implemented a Credit Note Tracker to flag outstanding credit balances and upcoming renewals, helping prevent service disruptions.</li>
+            <li>Created a Monthly Invoicing Workpaper comparing gross profit margins month-over-month, improving both profitability visibility and invoicing accuracy.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="role">
+        <div class="role-top">
+          <div class="role-title">Accounting Assistant</div>
+          <div class="role-dates mono">Mar 2022 – Nov 2024</div>
+        </div>
+        <div class="role-org">Labovick Law Group — Legal Services / Law Firm, United States<span class="badge">Part-Time</span></div>
+        <ul class="bullets">
+          <li>Reconciled credit card statements against accounting records and partnered with internal teams to resolve discrepancies.</li>
+          <li>Recorded deposits for settled cases, allocating receipts accurately to the correct bank and general ledger accounts.</li>
+          <li>Reconciled the Deposits Financial Dashboard against QuickBooks to keep records aligned with internal Litify data.</li>
+          <li>Prepared and reconciled provider and referral fee payments to maintain accurate account balances.</li>
+          <li>Reviewed unrecoverable costs on rejected or declined cases and processed appropriate write-offs.</li>
+          <li>Updated settled and rejected cases to inactive status in QuickBooks to keep accounting records organized.</li>
+        </ul>
+        <div class="achievement">
+          <span class="label">Key achievements</span>
+          <ul>
+            <li>Built an Expense Summary Workpaper in Excel Power Query, consolidating 200,000+ expense lines and simplifying the review of advanced and soft costs.</li>
+            <li>Streamlined invoice approvals by creating an Excel-based Invoice Approval Tracker, eliminating manual email back-and-forth.</li>
+            <li>Improved deposit accuracy with a dedicated Deposit Workpaper ensuring the correct bank account, account code, and date for FL and MA deposits.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="role">
+        <div class="role-top">
+          <div class="role-title">Financial Analyst</div>
+          <div class="role-dates mono">Apr 2021 – May 2022</div>
+        </div>
+        <div class="role-org">Manulife Business Processing Services — Insurance / Shared Services, Hong Kong<span class="badge">Full-Time</span></div>
+        <ul class="bullets">
+          <li>Posted journal entries and reconciled financial reports, accruals, and prepayments to support accurate month-end close, budgeting, and forecasting.</li>
+          <li>Managed fixed asset setup, depreciation, and disposals in line with accounting policy, and coded project expenses for accurate tracking.</li>
+          <li>Processed bills and credit notes, managed the payment mailbox, and resolved related queries.</li>
+        </ul>
+        <div class="achievement">
+          <span class="label">Key achievement</span>
+          <ul><li>Developed an Asia Chargeback Checking Workpaper that automated cost centre allocation and delivered measurable FTE hour savings.</li></ul>
+        </div>
+      </div>
+
+      <div class="role">
+        <div class="role-top">
+          <div class="role-title">Accounts Payable Coordinator</div>
+          <div class="role-dates mono">Aug 2016 – Apr 2017</div>
+        </div>
+        <div class="role-org">Canon Business Process Services — BPO / Finance &amp; Accounting Services, United States<span class="badge">Full-Time</span></div>
+        <ul class="bullets">
+          <li>Processed bills and credit notes, validated purchase orders, and resolved matching exceptions and supplier discrepancies.</li>
+          <li>Maintained accurate, compliant AP documentation and built strong supplier relationships.</li>
+          <li>Provided AP team backup support and coaching, and recommended process improvements that lifted AP efficiency and accuracy.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="section-head"><span class="num mono">05</span><h2 class="section-title">Education &amp; Certifications</h2></div>
+    <div class="edu-card">
+      <div>
+        <h3>Bachelor of Science in Business Administration</h3>
+        <div class="school">Major in Financial Management — Tarlac State University</div>
+      </div>
+      <div class="when mono">Jun 2012 – Jun 2016</div>
+    </div>
+    <div class="cert-line"><strong>Certification:</strong> Xero Certified Advisor</div>
+  </section>
+
+  <footer id="contact">
+    <div class="eyebrow">06 · Get in touch</div>
+    <h2>Open to Senior Bookkeeper and Management Accountant roles.</h2>
+    <div class="footer-actions">
+      <a class="btn primary" href="mailto:edjieboytaruc@gmail.com">Email Edjie</a>
+      <a class="btn ghost" href="https://linkedin.com/in/edjieboytaruc" target="_blank" rel="noopener">Connect on LinkedIn</a>
+      <a class="btn ghost" href="tel:+639155683386">Call +63 915 568 3386</a>
+    </div>
+    <div class="foot-note">Tarlac, Philippines · Available for remote roles across New Zealand, Australia, the United States, and beyond.</div>
+  </footer>
+
+</div>
